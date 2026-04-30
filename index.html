@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete Trades Stack — OSHE × Magnetize</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ROOT TOKENS
+   ============================================================ */
+:root {
+  --oshe-black:    #090d0b;
+  --oshe-surface:  #111714;
+  --oshe-green:    #00c48c;
+  --oshe-green-d:  rgba(0,196,140,0.12);
+  --oshe-green-g:  rgba(0,196,140,0.06);
+  --mag-navy:      #1c2b39;
+  --mag-navy-mid:  #253545;
+  --mag-navy-lt:   #2e4256;
+  --mag-red:       #e84c3d;
+  --mag-red-d:     rgba(232,76,61,0.14);
+  --white:         #ffffff;
+  --off-white:     #f8f7f4;
+  --light-border:  #e4e3df;
+  --text-body:     #2a2a2a;
+  --text-muted:    #6b6b68;
+  --text-dim:      rgba(255,255,255,0.45);
+  --border-dark:   rgba(255,255,255,0.07);
+  --border-mid:    rgba(255,255,255,0.10);
+  --font-h: 'Manrope', sans-serif;
+  --font-b: 'Figtree', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+  --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-b);
+  background: var(--oshe-black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* ============================================================
+   GRAIN OVERLAY
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-h);
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s;
+}
+.btn:hover::after { background: rgba(255,255,255,0.06); }
+
+.btn-sm  { font-size: 13px; padding: 9px 18px; border-radius: 50px; }
+.btn-md  { font-size: 15px; padding: 13px 26px; border-radius: 50px; }
+.btn-lg  { font-size: 16px; padding: 17px 36px; border-radius: 50px; letter-spacing: -0.01em; }
+.btn-xl  { font-size: 18px; padding: 20px 44px; border-radius: 50px; letter-spacing: -0.01em; }
+
+.btn-teal {
+  background: var(--oshe-green);
+  color: var(--oshe-black);
+  box-shadow: 0 0 0 0 rgba(0,196,140,0.4);
+}
+.btn-teal:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 32px rgba(0,196,140,0.35), 0 0 0 3px rgba(0,196,140,0.15);
+}
+.btn-teal:active { transform: translateY(0) scale(0.99); }
+
+.btn-navy {
+  background: var(--mag-navy);
+  color: var(--white);
+  border: 1px solid var(--mag-navy-lt);
+  box-shadow: 0 0 0 0 rgba(28,43,57,0.4);
+}
+.btn-navy:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: var(--mag-navy-mid);
+  box-shadow: 0 8px 32px rgba(28,43,57,0.5), 0 0 0 3px rgba(255,255,255,0.08);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: rgba(255,255,255,0.75);
+  border: 1px solid var(--border-mid);
+}
+.btn-ghost:hover {
+  color: var(--white);
+  border-color: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.05);
+  transform: translateY(-1px);
+}
+
+.btn-outline-teal {
+  background: transparent;
+  color: var(--oshe-green);
+  border: 1.5px solid var(--oshe-green);
+}
+.btn-outline-teal:hover {
+  background: var(--oshe-green-d);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   TOPBAR / NAV
+   ============================================================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(9,13,11,0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border-dark);
+  transition: background 0.4s;
+}
+.topbar.scrolled {
+  background: rgba(9,13,11,0.92);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05), 0 4px 24px rgba(0,0,0,0.4);
+}
+.brands {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand {
+  font-family: var(--font-h);
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.brand.o { color: var(--oshe-green); }
+.brand.m { color: var(--white); }
+.brand-sep { color: var(--text-dim); font-size: 15px; }
+.nav-btns { display: flex; align-items: center; gap: 10px; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+}
+
+/* Aurora / gradient mesh background */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg-base {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,196,140,0.18) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 50% at 80% 80%, rgba(28,43,57,0.6) 0%, transparent 70%),
+              radial-gradient(ellipse 50% 60% at 20% 60%, rgba(232,76,61,0.06) 0%, transparent 60%),
+              var(--oshe-black);
+}
+
+/* Floating orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: orbFloat 12s ease-in-out infinite;
+}
+.orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,196,140,0.25) 0%, transparent 70%);
+  top: -150px; left: 50%;
+  transform: translateX(-50%);
+  animation-duration: 14s;
+}
+.orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(28,43,57,0.8) 0%, transparent 70%);
+  bottom: 80px; right: -100px;
+  animation-delay: -5s;
+  animation-duration: 18s;
+}
+.orb-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(232,76,61,0.12) 0%, transparent 70%);
+  bottom: 200px; left: -80px;
+  animation-delay: -3s;
+  animation-duration: 20s;
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -30px) scale(1.05); }
+  66% { transform: translate(-15px, 20px) scale(0.97); }
+}
+
+/* Grid lines */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 30%, black 0%, transparent 80%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  width: 100%;
+}
+
+/* Badge pill */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  background: rgba(0,196,140,0.08);
+  border: 1px solid rgba(0,196,140,0.2);
+  border-radius: 50px;
+  font-family: var(--font-h);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--oshe-green);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+.badge-dot {
+  width: 7px; height: 7px;
+  background: var(--oshe-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--oshe-green);
+  animation: pulseDot 2.5s ease-in-out infinite;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Hero headline */
+.hero-h1 {
+  font-family: var(--font-h);
+  font-weight: 900;
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+}
+.h1-line {
+  display: block;
+  overflow: hidden;
+}
+.h1-line-inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.h1-line.revealed .h1-line-inner { transform: translateY(0); }
+.h1-white { color: var(--white); }
+.h1-teal  { color: var(--oshe-green); }
+
+/* Hero subtitle */
+.hero-sub {
+  font-size: clamp(16px, 2.2vw, 20px);
+  line-height: 1.65;
+  color: rgba(255,255,255,0.65);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  font-weight: 400;
+}
+
+/* Hero email capture */
+.hero-capture {
+  display: flex;
+  gap: 0;
+  max-width: 480px;
+  margin: 0 auto 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50px;
+  padding: 5px 5px 5px 22px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.hero-capture:focus-within {
+  border-color: rgba(0,196,140,0.5);
+  box-shadow: 0 0 0 3px rgba(0,196,140,0.1);
+}
+.hero-capture input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-b);
+  font-size: 15px;
+  color: var(--white);
+  min-width: 0;
+}
+.hero-capture input::placeholder { color: rgba(255,255,255,0.35); }
+
+.hero-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.hero-note {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.hero-note strong { color: rgba(255,255,255,0.7); font-weight: 600; }
+
+/* Trust bar */
+.trust-bar {
+  position: relative;
+  z-index: 2;
+  margin-top: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 20px 32px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  max-width: 720px;
+  width: 100%;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.01em;
+  font-family: var(--font-h);
+}
+.trust-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+.trust-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-dark);
+}
+
+/* ============================================================
+   SECTION UTILITIES
+   ============================================================ */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-h);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--oshe-green);
+  margin-bottom: 16px;
+}
+.section-eyebrow::before, .section-eyebrow::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0.5;
+}
+.section-h2 {
+  font-family: var(--font-h);
+  font-weight: 900;
+  font-size: clamp(32px, 5vw, 54px);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.section-h2-dark { color: var(--text-body); }
+.section-sub {
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 560px;
+}
+
+/* Scroll-fade-in */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   SPLIT PLATFORM SECTION
+   ============================================================ */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+}
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+.split-panel {
+  padding: 72px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.split-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.split-panel:hover::before { opacity: 1; }
+
+.p-oshe {
+  background: var(--oshe-surface);
+  border-right: 1px solid var(--border-dark);
+}
+.p-oshe::before {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,196,140,0.08) 0%, transparent 70%);
+}
+.p-mag {
+  background: var(--mag-navy);
+}
+.p-mag::before {
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.04) 0%, transparent 70%);
+}
+
+.panel-num {
+  font-family: var(--font-h);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.panel-name {
+  font-family: var(--font-h);
+  font-weight: 900;
+  font-size: 42px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.pn-teal  { color: var(--oshe-green); }
+.pn-white { color: var(--white); }
+
+.panel-tagline {
+  font-family: var(--font-h);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.panel-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* App mockup */
+.app-mockup {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius-md);
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.mockup-bar {
+  height: 36px;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 6px;
+}
+.mockup-dot { width: 8px; height: 8px; border-radius: 50%; }
+.md-red  { background: #e84c3d; opacity: 0.6; }
+.md-yel  { background: #f5a623; opacity: 0.6; }
+.md-grn  { background: #00c48c; opacity: 0.6; }
+.mockup-body { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.mockup-row {
+  height: 10px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+.mockup-row.short { width: 60%; }
+.mockup-row.shorter { width: 40%; }
+.mockup-row.teal { background: rgba(0,196,140,0.18); }
+@keyframes shimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.feat-list { display: flex; flex-direction: column; gap: 11px; }
+.feat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.75);
+}
+.feat-tick {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  margin-top: 1px;
+}
+.tick-teal  { background: rgba(0,196,140,0.15); color: var(--oshe-green); }
+.tick-white { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); }
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--off-white);
+  border-top: 1px solid var(--light-border);
+  border-bottom: 1px solid var(--light-border);
+}
+@media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+.stat {
+  padding: 52px 36px;
+  text-align: center;
+  border-right: 1px solid var(--light-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+.stat:last-child { border-right: none; }
+.stat:hover { background: rgba(0,196,140,0.04); }
+.stat-n {
+  font-family: var(--font-h);
+  font-weight: 900;
+  font-size: clamp(36px, 4vw, 52px);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.sn-teal  { color: var(--oshe-green); }
+.sn-navy  { color: var(--mag-navy); }
+.stat-l {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  max-width: 140px;
+  line-height: 1.4;
+  font-family: var(--font-h);
+}
+
+/* ============================================================
+   DEAL SECTION
+   ============================================================ */
+.deal {
+  padding: 100px 24px;
+  text-align: center;
+  background: var(--oshe-black);
+  position: relative;
+  overflow: hidden;
+}
+.deal::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(0,196,140,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+.deal-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.deal-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-family: var(--font-h);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+.deal-eyebrow-bar { flex: 1; max-width: 60px; height: 1px; background: var(--border-dark); }
+
+/* Urgency badge */
+.urgency-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(232,76,61,0.1);
+  border: 1px solid rgba(232,76,61,0.25);
+  border-radius: 50px;
+  padding: 6px 14px;
+  font-family: var(--font-h);
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff6b5e;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.urgency-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #e84c3d;
+  animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+.deal-big {
+  font-family: var(--font-h);
+  font-size: clamp(100px, 18vw, 180px);
+  font-weight: 900;
+  color: var(--oshe-green);
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  margin-bottom: 0;
+}
+.deal-off {
+  font-family: var(--font-h);
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+.deal-desc {
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.6);
+  max-width: 520px;
+  margin: 0 auto 40px;
+}
+
+/* Gift card code */
+.code-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 28px 36px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 280px;
+}
+.code-card::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--oshe-green), transparent);
+}
+.code-card:hover {
+  border-color: rgba(0,196,140,0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,196,140,0.15);
+}
+.code-label {
+  font-family: var(--font-h);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.code-val {
+  font-family: var(--font-h);
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--oshe-green);
+}
+.code-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+}
+
+.deal-fine {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+.deal-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Email capture in deal */
+.deal-capture {
+  max-width: 440px;
+  margin: 0 auto 36px;
+}
+.deal-capture-label {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 12px;
+  font-family: var(--font-h);
+  font-weight: 600;
+}
+.capture-form {
+  display: flex;
+  gap: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50px;
+  padding: 5px 5px 5px 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.capture-form:focus-within {
+  border-color: rgba(0,196,140,0.5);
+  box-shadow: 0 0 0 3px rgba(0,196,140,0.1);
+}
+.capture-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-b);
+  font-size: 15px;
+  color: var(--white);
+  min-width: 0;
+}
+.capture-form input::placeholder { color: rgba(255,255,255,0.3); }
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+.how {
+  padding: 100px 24px;
+  background: var(--oshe-surface);
+  position: relative;
+  overflow: hidden;
+}
+.how::before {
+  content: '';
+  position: absolute;
+  bottom: -100px; right: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(28,43,57,0.8) 0%, transparent 70%);
+  pointer-events: none;
+}
+.how-inner { max-width: 1100px; margin: 0 auto; }
+.how-header { text-align: center; margin-bottom: 72px; }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+
+/* Connector line */
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 42px; left: calc(16.67% + 24px); right: calc(16.67% + 24px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--oshe-green), rgba(255,255,255,0.1), var(--oshe-green));
+  pointer-events: none;
+}
+@media (max-width: 860px) { .steps::before { display: none; } }
+
+.step {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.step::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.step-oshe::before { background: linear-gradient(90deg, var(--oshe-green), transparent); }
+.step-mag::before  { background: linear-gradient(90deg, var(--mag-navy-lt), transparent); }
+.step-both::before { background: linear-gradient(90deg, var(--oshe-green), var(--mag-red)); }
+
+.step:hover { 
+  transform: translateY(-6px);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.step:hover::before { opacity: 1; }
+
+.step-n {
+  font-family: var(--font-h);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-h);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+  align-self: flex-start;
+}
+.sb-navy { background: rgba(28,43,57,0.8); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); }
+.sb-teal  { background: rgba(0,196,140,0.12); color: var(--oshe-green); border: 1px solid rgba(0,196,140,0.2); }
+.sb-both  { background: linear-gradient(90deg, rgba(0,196,140,0.12), rgba(232,76,61,0.12)); color: var(--white); border: 1px solid rgba(255,255,255,0.1); }
+
+.step-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+.step-title {
+  font-family: var(--font-h);
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.step-body {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   WHO IS THIS FOR
+   ============================================================ */
+.who {
+  padding: 100px 24px;
+  background: var(--off-white);
+}
+.who-inner { max-width: 1100px; margin: 0 auto; }
+.who-header { text-align: center; margin-bottom: 60px; }
+
+.trades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+.trade-card {
+  background: var(--white);
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: 28px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: var(--transition);
+  cursor: default;
+}
+.trade-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,196,140,0.1), 0 0 0 1px rgba(0,196,140,0.15);
+  border-color: rgba(0,196,140,0.2);
+}
+.trade-icon {
+  font-size: 36px;
+  line-height: 1;
+  display: block;
+}
+.trade-name {
+  font-family: var(--font-h);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-body);
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testimonials {
+  padding: 100px 24px;
+  background: var(--oshe-black);
+  position: relative;
+  overflow: hidden;
+}
+.testimonials::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,196,140,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.testi-inner { max-width: 1100px; margin: 0 auto; }
+.testi-header { text-align: center; margin-bottom: 60px; }
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 860px) { .testi-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) and (min-width: 861px) { .testi-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.testi-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.testi-card::before {
+  content: '"';
+  position: absolute;
+  top: -8px; right: 16px;
+  font-family: var(--font-h);
+  font-size: 80px;
+  font-weight: 900;
+  color: rgba(0,196,140,0.1);
+  line-height: 1;
+}
+.testi-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0,196,140,0.15);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.stars {
+  display: flex;
+  gap: 3px;
+  color: #fbbf24;
+  font-size: 14px;
+}
+.testi-quote {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  font-style: italic;
+  flex: 1;
+}
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-dark);
+}
+.testi-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--oshe-green), var(--mag-navy));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-h);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.testi-name {
+  font-family: var(--font-h);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+}
+.testi-role { font-size: 12px; color: var(--text-dim); }
+
+/* ============================================================
+   ROADMAP
+   ============================================================ */
+.roadmap {
+  padding: 100px 24px;
+  background: var(--off-white);
+}
+.roadmap-inner { max-width: 900px; margin: 0 auto; }
+.roadmap-header { text-align: center; margin-bottom: 52px; }
+
+.rm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+@media (max-width: 680px) { .rm-grid { grid-template-columns: 1fr; } }
+
+.rm-card {
+  background: var(--white);
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: 24px 26px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: var(--transition);
+}
+.rm-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border-color: rgba(0,196,140,0.2);
+}
+.rm-tag {
+  flex-shrink: 0;
+  font-family: var(--font-h);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 50px;
+  margin-top: 2px;
+}
+.rt-now  { background: rgba(0,196,140,0.12); color: #00a875; border: 1px solid rgba(0,196,140,0.2); }
+.rt-soon { background: rgba(232,76,61,0.08); color: #c43629; border: 1px solid rgba(232,76,61,0.15); }
+.rm-title {
+  font-family: var(--font-h);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-body);
+  margin-bottom: 4px;
+}
+.rm-body { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq {
+  padding: 100px 24px;
+  background: var(--oshe-surface);
+}
+.faq-inner { max-width: 740px; margin: 0 auto; }
+.faq-header { text-align: center; margin-bottom: 52px; }
+
+.faq-list { display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open {
+  border-color: rgba(0,196,140,0.2);
+}
+.faq-q {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-h);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+.faq-q:hover { color: var(--oshe-green); }
+.faq-icon {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: transform 0.3s, background 0.2s;
+  color: rgba(255,255,255,0.5);
+}
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  background: rgba(0,196,140,0.1);
+  border-color: rgba(0,196,140,0.3);
+  color: var(--oshe-green);
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.faq-item.open .faq-a { max-height: 300px; }
+.faq-a-inner {
+  padding: 0 24px 22px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border-dark);
+  padding-top: 16px;
+}
+
+/* ============================================================
+   FOOTER CTA
+   ============================================================ */
+.footer-cta {
+  padding: 120px 24px;
+  background: linear-gradient(180deg, var(--oshe-black) 0%, #060a08 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.footer-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(0,196,140,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.footer-cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+.footer-h {
+  font-family: var(--font-h);
+  font-weight: 900;
+  font-size: clamp(36px, 6vw, 64px);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+.footer-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 48px;
+  line-height: 1.6;
+}
+.footer-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   FOOTER BAR
+   ============================================================ */
+.footer-bar {
+  padding: 24px 32px;
+  background: var(--oshe-black);
+  border-top: 1px solid var(--border-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-bar-brands {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-copy { font-size: 13px; color: var(--text-dim); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--oshe-green); }
+
+/* ============================================================
+   STICKY MOBILE CTA
+   ============================================================ */
+.sticky-cta {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 800;
+  padding: 12px 16px;
+  background: rgba(9,13,11,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-dark);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sticky-cta.visible { transform: translateY(0); }
+.sticky-cta-text {
+  flex: 1;
+  font-family: var(--font-h);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+}
+.sticky-cta-text span { color: var(--oshe-green); }
+.sticky-cta a { flex-shrink: 0; }
+
+/* Only on mobile */
+@media (min-width: 768px) { .sticky-cta { display: none; } }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .topbar { padding: 0 16px; }
+  .nav-btns .btn-ghost { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .trust-bar { gap: 16px; padding: 16px 20px; }
+  .trust-divider { display: none; }
+  .split-panel { padding: 48px 28px; }
+  .stat { padding: 36px 20px; }
+  .deal { padding: 72px 20px; }
+  .how { padding: 72px 20px; }
+  .who { padding: 72px 20px; }
+  .testimonials { padding: 72px 20px; }
+  .roadmap { padding: 72px 20px; }
+  .faq { padding: 72px 20px; }
+  .footer-cta { padding: 80px 20px; }
+  .footer-bar { flex-direction: column; align-items: center; text-align: center; }
+  .footer-links { justify-content: center; }
+  .hero-capture { margin-bottom: 20px; }
+}
+
+@media (max-width: 480px) {
+  .deal-big { font-size: 88px; }
+  .code-card { min-width: 240px; padding: 22px 28px; }
+  .code-val { font-size: 26px; }
+}
+
+/* ============================================================
+   ID ANCHORS (offset for fixed nav)
+   ============================================================ */
+#deal, #how, #faq { scroll-margin-top: 64px; }
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<header class="topbar" id="topbar">
+  <div class="brands">
+    <span class="brand o">OSHE</span>
+    <span class="brand-sep">×</span>
+    <span class="brand m">Magnetize</span>
+  </div>
+  <div class="nav-btns">
+    <a href="#how" class="btn btn-ghost btn-sm">How it works</a>
+    <a href="#faq" class="btn btn-ghost btn-sm">FAQ</a>
+    <a href="#deal" class="btn btn-teal btn-sm">Get 20% off</a>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero-top">
+  <!-- Background layers -->
+  <div class="hero-bg">
+    <div class="hero-bg-base"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="hero-grid"></div>
+  </div>
+
+  <div class="hero-inner">
+    <!-- Badge -->
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      A partnership for NZ trades
+    </div>
+
+    <!-- Headline -->
+    <h1 class="hero-h1">
+      <span class="h1-line"><span class="h1-line-inner h1-white">Run the job.</span></span>
+      <span class="h1-line"><span class="h1-line-inner h1-teal">Stay compliant.</span></span>
+      <span class="h1-line"><span class="h1-line-inner h1-white">Done.</span></span>
+    </h1>
+
+    <!-- Sub -->
+    <p class="hero-sub">
+      Magnetize schedules your jobs and crew. OSHE keeps your H&S sorted. Two NZ-built platforms, one complete setup — zero overlap, zero excuses.
+    </p>
+
+    <!-- Email capture -->
+    <div class="hero-capture">
+      <input type="email" placeholder="Enter your work email" autocomplete="email" />
+      <a href="#deal" class="btn btn-teal btn-sm" style="border-radius:50px;padding:10px 22px;font-size:14px;">
+        Get 20% off →
+      </a>
+    </div>
+
+    <!-- CTA row -->
+    <div class="hero-cta-row">
+      <a href="https://oshe.co.nz/book.html" class="btn btn-ghost btn-sm">Try OSHE free</a>
+      <span style="color:var(--text-dim);font-size:12px;">or</span>
+      <a href="https://app.magnetize.co.nz/free-trial" class="btn btn-ghost btn-sm">Try Magnetize free</a>
+    </div>
+
+    <p class="hero-note">✓ Free trials available &nbsp;·&nbsp; ✓ No credit card required &nbsp;·&nbsp; <strong>✓ NZ-built & supported</strong></p>
+
+    <!-- Trust bar -->
+    <div class="trust-bar">
+      <div class="trust-item">
+        <span class="trust-icon">🛠️</span>
+        500+ NZ trades businesses
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <span class="trust-icon">✅</span>
+        Tōtika / SiteWise compliant
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <span class="trust-icon">🇳🇿</span>
+        Built &amp; supported in NZ
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <span class="trust-icon">⚡</span>
+        Up in a single afternoon
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PLATFORM SPLIT
+     ============================================================ -->
+<section class="split">
+  <!-- OSHE -->
+  <div class="split-panel p-oshe fade-up">
+    <div class="panel-num">01 — H&S Compliance</div>
+    <div class="panel-name pn-teal">OSHE</div>
+    <div class="panel-tagline">Health &amp; safety your crew will actually use.</div>
+
+    <!-- App mockup -->
+    <div class="app-mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dot md-red"></div>
+        <div class="mockup-dot md-yel"></div>
+        <div class="mockup-dot md-grn"></div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-row teal short"></div>
+        <div class="mockup-row"></div>
+        <div class="mockup-row shorter"></div>
+        <div class="mockup-row short"></div>
+        <div class="mockup-row"></div>
+      </div>
+    </div>
+
+    <p class="panel-desc">NZ-built H&S platform for contractors and trades businesses. Contractor management, QR site sign-in, SSSPs, incident reporting, hazard registers — all in one system built for how real sites actually work.</p>
+    <ul class="feat-list">
+      <li class="feat-item"><span class="feat-tick tick-teal">✓</span>QR code site sign-in — no app download needed</li>
+      <li class="feat-item"><span class="feat-tick tick-teal">✓</span>Contractor pre-qualification &amp; register</li>
+      <li class="feat-item"><span class="feat-tick tick-teal">✓</span>SSSPs in minutes, not hours</li>
+      <li class="feat-item"><span class="feat-tick tick-teal">✓</span>Incident reporting at sign-out</li>
+      <li class="feat-item"><span class="feat-tick tick-teal">✓</span>Tōtika / SiteWise compliant</li>
+    </ul>
+    <a href="https://oshe.co.nz/book.html" class="btn btn-teal btn-md" style="align-self:flex-start;">Try OSHE free →</a>
+  </div>
+
+  <!-- Magnetize -->
+  <div class="split-panel p-mag fade-up" style="transition-delay:0.15s;">
+    <div class="panel-num">02 — Job Management</div>
+    <div class="panel-name pn-white">Magnetize</div>
+    <div class="panel-tagline">Job scheduling built for Kiwi trades.</div>
+
+    <!-- App mockup -->
+    <div class="app-mockup" style="background:rgba(255,255,255,0.04);">
+      <div class="mockup-bar" style="background:rgba(255,255,255,0.05);">
+        <div class="mockup-dot md-red"></div>
+        <div class="mockup-dot md-yel"></div>
+        <div class="mockup-dot md-grn"></div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-row" style="background:rgba(255,255,255,0.1);"></div>
+        <div class="mockup-row short" style="background:rgba(255,255,255,0.07);"></div>
+        <div class="mockup-row" style="background:rgba(255,255,255,0.1);"></div>
+        <div class="mockup-row shorter" style="background:rgba(255,255,255,0.05);"></div>
+        <div class="mockup-row short" style="background:rgba(255,255,255,0.08);"></div>
+      </div>
+    </div>
+
+    <p class="panel-desc">From quote to invoice. Schedule jobs, track your team, log time and equipment — then push to Xero. No whiteboards, no spreadsheets, no double entry. Works on any device.</p>
+    <ul class="feat-list">
+      <li class="feat-item"><span class="feat-tick tick-white">✓</span>Drag-and-drop job scheduling</li>
+      <li class="feat-item"><span class="feat-tick tick-white">✓</span>Quote to invoice in one platform</li>
+      <li class="feat-item"><span class="feat-tick tick-white">✓</span>Staff timelog &amp; equipment tracking</li>
+      <li class="feat-item"><span class="feat-tick tick-white">✓</span>Xero integration — no double entry</li>
+      <li class="feat-item"><span class="feat-tick tick-white">✓</span>Mobile app for the whole crew</li>
+    </ul>
+    <a href="https://app.magnetize.co.nz/free-trial" class="btn btn-navy btn-md" style="align-self:flex-start;border:1px solid rgba(255,255,255,0.15);">Try Magnetize free →</a>
+  </div>
+</section>
+
+<!-- ============================================================
+     STATS
+     ============================================================ -->
+<div class="stats">
+  <div class="stat fade-up">
+    <div class="stat-n sn-teal" data-count-target="NZ">NZ</div>
+    <div class="stat-l">Built &amp; based in New Zealand</div>
+  </div>
+  <div class="stat fade-up" style="transition-delay:0.1s;">
+    <div class="stat-n sn-navy" data-count="2" data-suffix="">2</div>
+    <div class="stat-l">Platforms. One complete stack.</div>
+  </div>
+  <div class="stat fade-up" style="transition-delay:0.2s;">
+    <div class="stat-n sn-teal" data-count="20" data-suffix="%">20%</div>
+    <div class="stat-l">Off both when you use both</div>
+  </div>
+  <div class="stat fade-up" style="transition-delay:0.3s;">
+    <div class="stat-n sn-navy" data-count="0" data-suffix="">0</div>
+    <div class="stat-l">Overlap between the two platforms</div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DEAL
+     ============================================================ -->
+<section class="deal" id="deal">
+  <div class="deal-inner">
+    <div class="deal-eyebrow">
+      <div class="deal-eyebrow-bar"></div>
+      The Complete Trades Stack
+      <div class="deal-eyebrow-bar"></div>
+    </div>
+
+    <div class="urgency-badge">
+      <span class="urgency-dot"></span>
+      Founding partner pricing — limited time
+    </div>
+
+    <div class="deal-big fade-up">20%</div>
+    <div class="deal-off fade-up">off both platforms.</div>
+    <p class="deal-desc fade-up">Sign up to OSHE and Magnetize together and get 20% off each. No money changes hands between us — just a shared discount for businesses smart enough to run a proper setup.</p>
+
+    <!-- Gift-card code -->
+    <div class="code-card fade-up" id="codeCard" title="Click to copy">
+      <span class="code-label">Your discount code</span>
+      <span class="code-val" id="codeVal">TRADESSTACK</span>
+      <span class="code-copy" id="copyHint">Click to copy</span>
+    </div>
+
+    <!-- Email capture -->
+    <div class="deal-capture fade-up">
+      <div class="deal-capture-label">Get the code emailed to you</div>
+      <div class="capture-form">
+        <input type="email" placeholder="your@email.com" autocomplete="email" />
+        <a href="#deal" class="btn btn-teal btn-sm" style="border-radius:50px;padding:10px 22px;font-size:14px;">Send it →</a>
+      </div>
+    </div>
+
+    <p class="deal-fine">Apply at checkout on either platform. Valid for new sign-ups and existing customers upgrading their plan.</p>
+
+    <div class="deal-btns fade-up">
+      <a href="https://oshe.co.nz/book.html" class="btn btn-teal btn-lg">Claim via OSHE</a>
+      <a href="https://app.magnetize.co.nz/free-trial" class="btn btn-navy btn-lg">Claim via Magnetize</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="how-header">
+      <div class="section-eyebrow">How it works together</div>
+      <h2 class="section-h2">Same customer. No overlap.<br>Better together.</h2>
+    </div>
+    <div class="steps">
+      <div class="step step-mag fade-up">
+        <div class="step-n">Step 01</div>
+        <span class="step-badge sb-navy">Magnetize</span>
+        <div class="step-icon">📋</div>
+        <h3 class="step-title">Schedule and quote the job</h3>
+        <p class="step-body">Create a quote from your ratebook in seconds. Drag it onto the calendar. Your crew sees job details, client info, and site address on their phone before they arrive.</p>
+      </div>
+      <div class="step step-oshe fade-up" style="transition-delay:0.15s;">
+        <div class="step-n">Step 02</div>
+        <span class="step-badge sb-teal">OSHE</span>
+        <div class="step-icon">🛡️</div>
+        <h3 class="step-title">Sign in safe and compliant</h3>
+        <p class="step-body">Workers scan the QR code. Induction in the same flow. Incidents flagged at sign-out. Contractors pre-qualified before they step foot on your site. Nothing falls through.</p>
+      </div>
+      <div class="step step-both fade-up" style="transition-delay:0.3s;">
+        <div class="step-n">Step 03</div>
+        <span class="step-badge sb-both">Both</span>
+        <div class="step-icon">⚡</div>
+        <h3 class="step-title">Invoice and close clean</h3>
+        <p class="step-body">Job done — Magnetize reconciles quote vs logged time and pushes to Xero. OSHE has the full H&S trail captured. Audit-ready. No chasing, no double entry.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHO IS THIS FOR
+     ============================================================ -->
+<section class="who">
+  <div class="who-inner">
+    <div class="who-header fade-up">
+      <div class="section-eyebrow" style="justify-content:center;">Who this is for</div>
+      <h2 class="section-h2 section-h2-dark">Built for every<br>trade on site.</h2>
+      <p class="section-sub" style="margin:16px auto 0;">If you've got crew, jobs to schedule, and H&S obligations — this stack is for you.</p>
+    </div>
+    <div class="trades-grid">
+      <div class="trade-card fade-up"><span class="trade-icon">⚡</span><span class="trade-name">Electricians</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.05s;"><span class="trade-icon">🔧</span><span class="trade-name">Plumbers</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.1s;"><span class="trade-icon">🏗️</span><span class="trade-name">Builders</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.15s;"><span class="trade-icon">🌿</span><span class="trade-name">Landscapers</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.2s;"><span class="trade-icon">❄️</span><span class="trade-name">HVAC &amp; Refrigeration</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.25s;"><span class="trade-icon">🪵</span><span class="trade-name">Carpenters</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.3s;"><span class="trade-icon">🎨</span><span class="trade-name">Painters</span></div>
+      <div class="trade-card fade-up" style="transition-delay:0.35s;"><span class="trade-icon">🔩</span><span class="trade-name">General Contractors</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section class="testimonials">
+  <div class="testi-inner">
+    <div class="testi-header">
+      <div class="section-eyebrow" style="justify-content:center;">What trades businesses say</div>
+      <h2 class="section-h2">Real results from real sites.</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"We used to spend half a Friday chasing timesheets. Now the crew logs everything in the app and it goes straight to Xero. Biggest time save we've made."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JK</div>
+          <div>
+            <div class="testi-name">James K.</div>
+            <div class="testi-role">Owner · Electrical contractor, Auckland</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up" style="transition-delay:0.12s;">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Tōtika renewal used to be a nightmare. OSHE made it straightforward — all the evidence is already captured. Combined with Magnetize it's just a complete setup."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#1c2b39,#e84c3d);">SR</div>
+          <div>
+            <div class="testi-name">Sarah R.</div>
+            <div class="testi-role">H&S Manager · Civil contractor, Wellington</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card fade-up" style="transition-delay:0.24s;">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Finally two systems that work for the way we actually operate. QR sign-in is a game changer on bigger sites — no more clipboards, no more gaps in the register."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:linear-gradient(135deg,#253545,#00c48c);">MT</div>
+          <div>
+            <div class="testi-name">Mike T.</div>
+            <div class="testi-role">Director · Plumbing &amp; drainage, Christchurch</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ROADMAP
+     ============================================================ -->
+<section class="roadmap">
+  <div class="roadmap-inner">
+    <div class="roadmap-header fade-up">
+      <div class="section-eyebrow" style="justify-content:center;">Partnership roadmap</div>
+      <h2 class="section-h2 section-h2-dark">A partnership built to grow.</h2>
+      <p class="section-sub" style="margin:16px auto 0;">What's live now, and what we're building together.</p>
+    </div>
+    <div class="rm-grid">
+      <div class="rm-card fade-up">
+        <span class="rm-tag rt-now">Now</span>
+        <div>
+          <div class="rm-title">20% off for customers using both</div>
+          <div class="rm-body">Use TRADESSTACK at checkout on either platform.</div>
+        </div>
+      </div>
+      <div class="rm-card fade-up" style="transition-delay:0.08s;">
+        <span class="rm-tag rt-now">Now</span>
+        <div>
+          <div class="rm-title">In-app cross-promotion</div>
+          <div class="rm-body">Each platform flags the other as a recommended integration.</div>
+        </div>
+      </div>
+      <div class="rm-card fade-up" style="transition-delay:0.16s;">
+        <span class="rm-tag rt-now">Now</span>
+        <div>
+          <div class="rm-title">Joint content and case studies</div>
+          <div class="rm-body">Co-branded social content and mutual mentions.</div>
+        </div>
+      </div>
+      <div class="rm-card fade-up" style="transition-delay:0.24s;">
+        <span class="rm-tag rt-soon">Coming</span>
+        <div>
+          <div class="rm-title">API integration</div>
+          <div class="rm-body">H&S compliance status surfacing inside the Magnetize job view.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header fade-up">
+      <div class="section-eyebrow" style="justify-content:center;">FAQ</div>
+      <h2 class="section-h2">Common questions.</h2>
+      <p style="font-size:16px;color:var(--text-dim);margin-top:12px;">Answers to the objections we hear most.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Do I need to sign up to both to get the discount?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Nope — you can use the code TRADESSTACK on either platform individually. But the real value comes from running both together, since they complement each other perfectly with no overlap.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          I'm already a customer on one platform. Does it still apply?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes. The TRADESSTACK discount is valid for both new sign-ups and existing customers upgrading or adding to their plan. Apply it at checkout or contact the respective support team if you're mid-subscription.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Do OSHE and Magnetize share my data?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">No. OSHE and Magnetize are independent platforms — they don't share customer data. This is a commercial partnership for mutual promotion and a shared discount, not a data integration (that's what the API roadmap item is about, down the track).</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          How long does it take to get set up?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Most trades businesses are up and running on both platforms in a single afternoon. OSHE's QR site sign-in requires no app download from crew, and Magnetize's onboarding is designed for small teams — not enterprise IT projects.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          Is OSHE actually Tōtika / SiteWise compliant?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes. OSHE is purpose-built to support Tōtika and SiteWise compliance requirements, including contractor pre-qualification, SSSP documentation, and incident reporting workflows — all the evidence you need, captured automatically.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER CTA
+     ============================================================ -->
+<section class="footer-cta">
+  <div class="footer-cta-inner">
+    <h2 class="footer-h">Get the complete <span style="color:var(--oshe-green);">trades</span> setup.</h2>
+    <p class="footer-sub">Try both platforms free. Then use <strong style="color:var(--oshe-green);">TRADESSTACK</strong> for 20% off. NZ-built, NZ-supported.</p>
+    <div class="footer-btns">
+      <a href="https://oshe.co.nz/book.html" class="btn btn-teal btn-xl">Start with OSHE</a>
+      <a href="https://app.magnetize.co.nz/free-trial" class="btn btn-navy btn-xl">Start with Magnetize</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER BAR
+     ============================================================ -->
+<footer class="footer-bar">
+  <div class="footer-bar-brands">
+    <span class="brand o" style="font-size:14px;">OSHE</span>
+    <span class="brand-sep" style="font-size:12px;">×</span>
+    <span class="brand m" style="font-size:14px;">Magnetize</span>
+    <span class="footer-copy">— A partnership for NZ trades</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://oshe.co.nz">oshe.co.nz</a>
+    <a href="https://magnetize.co.nz">magnetize.co.nz</a>
+    <a href="mailto:info@oshe.co.nz">Contact OSHE</a>
+  </div>
+</footer>
+
+<!-- ============================================================
+     STICKY MOBILE CTA
+     ============================================================ -->
+<div class="sticky-cta" id="stickyCta">
+  <div class="sticky-cta-text">Use <span>TRADESSTACK</span> for 20% off</div>
+  <a href="https://oshe.co.nz/book.html" class="btn btn-teal btn-sm">Try OSHE</a>
+  <a href="https://app.magnetize.co.nz/free-trial" class="btn btn-ghost btn-sm">Try Magnetize</a>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* ----------------------------------------------------------
+   Nav scroll effect
+   ---------------------------------------------------------- */
+const topbar = document.getElementById('topbar');
+window.addEventListener('scroll', () => {
+  topbar.classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+/* ----------------------------------------------------------
+   Hero headline reveal (staggered)
+   ---------------------------------------------------------- */
+window.addEventListener('DOMContentLoaded', () => {
+  const lines = document.querySelectorAll('.h1-line');
+  lines.forEach((line, i) => {
+    setTimeout(() => line.classList.add('revealed'), 200 + i * 140);
+  });
+});
+
+/* ----------------------------------------------------------
+   IntersectionObserver — fade-up elements
+   ---------------------------------------------------------- */
+const fadeEls = document.querySelectorAll('.fade-up');
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+fadeEls.forEach(el => fadeObserver.observe(el));
+
+/* ----------------------------------------------------------
+   Count-up animation for stats
+   ---------------------------------------------------------- */
+function countUp(el, target, suffix, duration) {
+  const start = performance.now();
+  const isZero = target === 0;
+  const step = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(ease * target);
+    el.textContent = current + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target + suffix;
+  };
+  if (isZero) { el.textContent = '0' + suffix; return; }
+  requestAnimationFrame(step);
+}
+
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      if (!isNaN(target)) countUp(el, target, suffix, 1200);
+      statObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => statObserver.observe(el));
+
+/* ----------------------------------------------------------
+   Copy discount code
+   ---------------------------------------------------------- */
+const codeCard = document.getElementById('codeCard');
+const codeVal  = document.getElementById('codeVal');
+const copyHint = document.getElementById('copyHint');
+codeCard?.addEventListener('click', () => {
+  navigator.clipboard?.writeText('TRADESSTACK').then(() => {
+    copyHint.textContent = '✓ Copied!';
+    codeVal.style.color = '#fff';
+    setTimeout(() => {
+      copyHint.textContent = 'Click to copy';
+      codeVal.style.color = '';
+    }, 2000);
+  });
+});
+
+/* ----------------------------------------------------------
+   FAQ accordion
+   ---------------------------------------------------------- */
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    // Toggle clicked
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+/* ----------------------------------------------------------
+   Sticky mobile CTA — show after scrolling past hero
+   ---------------------------------------------------------- */
+const stickyCta = document.getElementById('stickyCta');
+const heroEl    = document.getElementById('hero-top');
+const stickyObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    stickyCta.classList.toggle('visible', !entry.isIntersecting);
+  });
+}, { threshold: 0.1 });
+if (heroEl) stickyObserver.observe(heroEl);
+
+/* ----------------------------------------------------------
+   Email form — simple prevent default + visual feedback
+   ---------------------------------------------------------- */
+document.querySelectorAll('.capture-form, .hero-capture').forEach(form => {
+  const btn = form.querySelector('a');
+  const input = form.querySelector('input');
+  if (!btn || !input) return;
+  btn.addEventListener('click', (e) => {
+    if (!input.value || !input.value.includes('@')) {
+      e.preventDefault();
+      input.style.outline = '2px solid rgba(232,76,61,0.5)';
+      input.placeholder = 'Enter a valid email';
+      setTimeout(() => {
+        input.style.outline = '';
+        input.placeholder = input === document.querySelector('.hero-capture input')
+          ? 'Enter your work email' : 'your@email.com';
+      }, 1800);
+    }
+  });
+});
+</script>
+</body>
+</html>
+
